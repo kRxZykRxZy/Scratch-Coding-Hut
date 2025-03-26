@@ -4,6 +4,7 @@ const cors = require('cors');
 const { exec } = require('child_process');
 const path = require('path');
 const fs = require('fs');
+const mime = require('mime-types'); // To detect mime type based on file extension
 
 const app = express();
 const PORT = 3000;
@@ -64,12 +65,33 @@ app.post('/clone-repo', (req, res) => {
 
         console.log(`Repository cloned successfully to ${repoPath}`);
 
-        // Return success response with URL to access the cloned repo
+        // Generate a list of files in the cloned repository
+        const files = [];
+        function walkDir(dir) {
+            const items = fs.readdirSync(dir);
+
+            items.forEach(item => {
+                const itemPath = path.join(dir, item);
+                const stats = fs.statSync(itemPath);
+
+                if (stats.isDirectory()) {
+                    walkDir(itemPath); // Recursively explore directories
+                } else {
+                    // Store file path relative to the repo
+                    files.push(itemPath.replace(repoPath + '/', ''));
+                }
+            });
+        }
+
+        walkDir(repoPath); // Start walking the cloned repo folder
+
+        // Return success response with URL to access the cloned repo and file paths
         const repoUrlPath = `https://sch-ai1z.onrender.com/websites/${repoName}`;
         res.status(200).json({
             message: 'Repository cloned successfully!',
             folderPath: repoPath,
             repoUrl: repoUrlPath,
+            files: files, // List of files in the repo
         });
     });
 });
