@@ -1,0 +1,22 @@
+{
+  "name": "scratch-coding-hut",
+  "version": "1.0.0",
+  "description": "A simple Node.js app to clone GitHub repositories and save them in a local folder.",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "keywords": [
+    "github",
+    "clone",
+    "repo",
+    "express",
+    "nodejs"
+  ],
+  "author": "Scratch Coding Hut",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "express": "^4.18.2"
+  }
+}
