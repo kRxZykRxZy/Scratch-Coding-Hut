@@ -48,6 +48,7 @@ If you want to appeal please use the appeal form or contact MyScratchedAccount o
 
     $(document).ready(function() {
         var username = getParameterByName('username');
+	const username = localStorage.getItem('username')
         
         $.getJSON('bannedusers.json', function(data) {
             var bannedUsers = data.bannedusers;
