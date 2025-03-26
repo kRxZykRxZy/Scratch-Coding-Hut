@@ -45,7 +45,7 @@ app.post('/clone-repo', (req, res) => {
     if (fs.existsSync(repoPath)) {
         return res.status(400).json({
             error: 'Repo folder already exists.',
-            repoUrl: `https://scratch-coding-hut.github.io/websites/${repoName}`,
+            repoUrl: `https://https://sch-ai1z.onrender.com/websites/${repoName}`,
         });
     }
 
