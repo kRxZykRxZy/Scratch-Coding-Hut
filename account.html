@@ -144,6 +144,7 @@
                     document.getElementById('authSection').style.display = 'none';
                     document.getElementById('loggedInContent').style.display = 'block';
                     document.getElementById('welcomeMessage').textContent = `Welcome to your account, ${username}!`;
+                    localStorage.setItem('username', username)
 
                     const res = await fetch(`https://scratchgems.onrender.com/api/data/${username}`);
                     if (!res.ok) throw new Error('Failed to fetch data');
