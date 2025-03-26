@@ -1,11 +1,15 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const { exec } = require('child_process');
 const path = require('path');
 const fs = require('fs');
 
 const app = express();
 const PORT = 3000;
+
+// Middleware to enable CORS
+app.use(cors());
 
 // Middleware to parse JSON
 app.use(bodyParser.json());
@@ -45,7 +49,6 @@ app.post('/clone-repo', (req, res) => {
     if (fs.existsSync(repoPath)) {
         return res.status(400).json({
             error: 'Repo folder already exists.',
-            repoUrl: `https://https://sch-ai1z.onrender.com/websites/${repoName}`,
         });
     }
 
