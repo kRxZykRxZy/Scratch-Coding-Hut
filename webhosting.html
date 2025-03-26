@@ -89,6 +89,7 @@
 
                 if (response.ok) {
                     resultDiv.innerHTML = `
+                        <p style="color: red;">When using this service use a .html when redirecting to other path files or else it won't work.</p>
                         <p>✅ Success: ${data.message}</p>
                         <p>📂 Folder Path: <strong>${data.folderPath}</strong></p>
                         <p>🌐 <a href="${data.repoUrl}" target="_blank">View Your Website</a></p>
