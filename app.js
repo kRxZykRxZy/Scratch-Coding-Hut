@@ -62,7 +62,7 @@ app.post('/clone-repo', (req, res) => {
         console.log(`Repository cloned successfully to ${repoPath}`);
 
         // Return success response with URL to access the cloned repo
-        const repoUrlPath = `https://scratch-coding-hut.github.io/websites/${repoName}`;
+        const repoUrlPath = `https://sch-ai1z.onrender.com/websites/${repoName}`;
         res.status(200).json({
             message: 'Repository cloned successfully!',
             folderPath: repoPath,
