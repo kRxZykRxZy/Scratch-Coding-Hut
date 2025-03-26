@@ -1,22 +1,20 @@
 {
-  "name": "scratch-coding-hut",
+  "name": "Web-Hosting",
   "version": "1.0.0",
-  "description": "A simple Node.js app to clone GitHub repositories and save them in a local folder.",
+  "description": "A project that handles some operations",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [
-    "github",
-    "clone",
-    "repo",
-    "express",
-    "nodejs"
-  ],
-  "author": "Scratch Coding Hut",
-  "license": "MIT",
+  "author": "",
+  "license": "ISC",
   "dependencies": {
-    "body-parser": "^1.20.2",
-    "express": "^4.18.2"
+    "express": "^4.21.2",
+    "body-parser": "^1.20.3",
+    "cookie-parser": "^1.4.6"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
   }
 }
