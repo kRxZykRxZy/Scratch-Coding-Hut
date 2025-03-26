@@ -1,12 +1,15 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const { exec } = require('child_process');
 const path = require('path');
 const fs = require('fs');
-const axios = require('axios'); // For making HTTP requests
 
 const app = express();
 const PORT = 3000;
+
+// Middleware to enable CORS
+app.use(cors());
 
 // Middleware to parse JSON
 app.use(bodyParser.json());
@@ -19,12 +22,17 @@ if (!fs.existsSync(WEBSITES_DIR)) {
     fs.mkdirSync(WEBSITES_DIR);
 }
 
+// Serve webhosting.html on the root route
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'webhosting.html'));
+});
+
 // Serve static files from the websites folder
 app.use('/websites', express.static(WEBSITES_DIR));
 
 // POST endpoint to receive GitHub URL
-app.post('/clone-repo', async (req, res) => {
-    const { repoUrl, deployUrl } = req.body; // Expect deployUrl for auto deployment
+app.post('/clone-repo', (req, res) => {
+    const { repoUrl } = req.body;
 
     // Validate the GitHub URL
     if (!repoUrl || !repoUrl.startsWith('https://github.com/')) {
@@ -48,7 +56,7 @@ app.post('/clone-repo', async (req, res) => {
     const cloneCommand = `git clone ${repoUrl} ${repoPath}`;
 
     // Execute git clone command
-    exec(cloneCommand, async (error, stdout, stderr) => {
+    exec(cloneCommand, (error, stdout, stderr) => {
         if (error) {
             console.error(`Error cloning repo: ${stderr}`);
             return res.status(500).json({ error: 'Error cloning the repository.' });
@@ -56,25 +64,25 @@ app.post('/clone-repo', async (req, res) => {
 
         console.log(`Repository cloned successfully to ${repoPath}`);
 
-        // Trigger deployment (to Render or another platform)
-        try {
-            const deployResponse = await axios.post(deployUrl, {
-                repoName, // You can send additional info if needed
-            });
+        // Check if there is an index.html in the repo
+        const indexHtmlPath = path.join(repoPath, 'index.html');
 
-            console.log('Deployment triggered:', deployResponse.data);
+        // Set the redirect URL based on whether index.html exists
+        let redirectUrl = `/websites/${repoName}/index.html`;
 
-            // Construct the URL for the website hosted at Render
-            const websiteUrl = `https://sch-ai1z.onrender.com/websites/${repoName}`;
-
-            res.status(200).json({
-                message: 'Repository cloned and deployment triggered!',
-                repoUrl: websiteUrl,
-            });
-        } catch (err) {
-            console.error('Error triggering deployment:', err);
-            res.status(500).json({ error: 'Error triggering deployment.' });
+        // If there's no index.html, we can redirect to a general directory or handle accordingly
+        if (!fs.existsSync(indexHtmlPath)) {
+            redirectUrl = `/websites/${repoName}`;  // Default fallback
         }
+
+        // Return success response with URL to access the cloned repo
+        const repoUrlPath = `https://sch-ai1z.onrender.com/websites/${repoName}`;
+        res.status(200).json({
+            message: 'Repository cloned successfully!',
+            folderPath: repoPath,
+            repoUrl: repoUrlPath,
+            redirectUrl: redirectUrl,  // Return the redirect URL with the correct file path
+        });
     });
 });
 
