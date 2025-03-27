@@ -22,4 +22,4 @@ jobs:
         with:
           branch: gh-pages  # The branch where the content will be deployed (default is gh-pages)
           folder: src  # The folder to deploy (in your case, it's 'src')
-          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}  # Use the PAT stored in GitHub secrets
+          token: ${{ secrets.GITHUB_TOKEN }}  # Ensure token is passed correctly
