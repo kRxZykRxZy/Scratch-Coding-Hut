@@ -1,0 +1,53 @@
+name: Auto Sync Data from Another Repo
+
+on:
+  schedule:
+    - cron: '* * * * *' # Runs every minute
+  workflow_dispatch: # Manual trigger if needed
+
+jobs:
+  sync-repo:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Current Repo
+      uses: actions/checkout@v2
+
+    - name: Clone Target Repo
+      run: |
+        git clone https://${{ secrets.PAT }}@github.com/Scratch-Coding-Hut/Scratch-Coding-Hut.github.io.git temp-repo
+
+    - name: Check for Changes
+      id: check_changes
+      run: |
+        cd temp-repo
+        LATEST_COMMIT=$(git rev-parse HEAD)
+        cd ..
+        if [ -f .latest_commit ]; then
+          PREV_COMMIT=$(cat .latest_commit)
+          if [ "$LATEST_COMMIT" == "$PREV_COMMIT" ]; then
+            echo "No changes detected."
+            exit 0
+          fi
+        fi
+        echo $LATEST_COMMIT > .latest_commit
+        echo "New changes detected."
+
+    - name: Copy Files to Current Repo
+      if: success() # Only run if changes are detected
+      run: |
+        rsync -av --progress temp-repo/ . --exclude .git --exclude .github --ignore-missing-args --delete
+        rm -rf temp-repo
+
+    - name: Configure Git
+      if: success()
+      run: |
+        git config user.name "github-actions"
+        git config user.email "github-actions@github.com"
+
+    - name: Commit and Push Changes
+      if: success()
+      run: |
+        git add .
+        git diff --quiet && git diff --staged --quiet || git commit -m "Sync data from target repo"
+        git push
