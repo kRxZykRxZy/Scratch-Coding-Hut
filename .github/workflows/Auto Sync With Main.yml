@@ -15,9 +15,7 @@ jobs:
 
     - name: Clone Target Repo
       run: |
-        git clone https://github.com/username/target-repo.git temp-repo
-      env:
-        GITHUB_TOKEN: ${{ secrets.PAT }}
+        git clone https://${{ secrets.PAT }}@github.com/Scratch-Coding-Hut/Scratch-Coding-Hut.github.io.git temp-repo
 
     - name: Check for Changes
       id: check_changes
