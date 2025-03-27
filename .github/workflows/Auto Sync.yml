@@ -36,7 +36,7 @@ jobs:
     - name: Copy Files to Current Repo
       if: success() # Only run if changes are detected
       run: |
-        rsync -av --progress temp-repo/ . --exclude .git --exclude .github --ignore-missing-args --delete
+        rsync -av --progress temp-repo/ . --exclude .git --exclude .github --ignore-missing-args --delete --ignore-errors
         rm -rf temp-repo
 
     - name: Configure Git
