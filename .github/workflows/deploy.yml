@@ -1,0 +1,25 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main  # Trigger deployment only on push to the 'main' branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          ref: main  # Ensure you're deploying from the correct branch (main)
+
+      # Set up the GitHub Pages deploy action
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4  # Using the latest stable version
+        with:
+          branch: gh-pages  # The branch where the content will be deployed (default is gh-pages)
+          folder: src  # The folder to deploy (in your case, it's 'src')
+          token: ${{ secrets.GITHUB_TOKEN }}  # Ensure token is passed correctly
