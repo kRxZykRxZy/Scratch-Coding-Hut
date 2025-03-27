@@ -3,28 +3,23 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main  # Or the branch you're working on
+      - main  # Trigger deployment only on push to the 'main' branch
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
+      # Checkout the code
       - name: Checkout code
         uses: actions/checkout@v2
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
         with:
-          node-version: '14'
+          ref: main  # Ensure you're deploying from the correct branch (main)
 
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build the project
-        run: npm run build   # This depends on your build system (e.g., React, Vue, etc.)
-
+      # Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@4.2.0
+        uses: JamesIves/github-pages-deploy-action@v4.2.0
         with:
-          branch: gh-pages    # Deployment branch
-          folder: src       # Folder to deploy (set to where the build output is)
+          branch: gh-pages  # The branch where the content will be deployed (default is gh-pages)
+          folder: src  # The folder to deploy (in your case, it's 'src')
+          token: ${{ secrets.GITHUB_TOKEN }}  # Automatically used token for authentication
