@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>About | Coding Hut</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+      body {
+        overflow-x: hidden;
+        font-family: Sans-Serif;
+        margin: 0;
+      }
+<link href='https://fonts.googleapis.com/css?family=Comfortaa' rel='stylesheet'>
+<style>
+body {
+    font-family: 'Comfortaa';font-size: 22px;
+}
+
+      .menu-container {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: #c04d4d;
+        padding: 20px;
+        z-index: 1;
+        user-select: none;
+        box-sizing: border-box;
+      }
+
+      .menu-logo img {
+        max-height: 40px;
+        max-width: 100px;
+        flex-shrink: 0;
+      }
+
+      .menu-container a {
+        text-decoration: none;
+        color: #ffffff;
+        transition: color 0.3s ease;
+      }
+
+      .menu-container a:hover {
+        color: #50e3c2;
+      }
+
+      .menu ul {
+        list-style: none;
+        display: flex;
+        padding: 0;
+        margin: 0;
+      }
+
+      .menu li {
+        padding: 0 20px;
+        font-size: 22px;
+      }
+
+      /* Mobile Styles */
+      @media only screen and (max-width: 767px) {
+        .menu-container {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .menu-logo {
+          margin-bottom: 10px;
+        }
+
+        .menu {
+          display: none;
+          width: 100%;
+          flex-direction: column;
+        }
+
+        .menu ul {
+          flex-direction: column;
+          width: 100%;
+        }
+
+        .menu li {
+          padding: 10px 0;
+          text-align: center;
+        }
+
+        /* Menu button */
+        .hamburger {
+          display: block;
+          font-size: 30px;
+          cursor: pointer;
+        }
+      }
+
+      /* Desktop Styles */
+      @media only screen and (min-width: 768px) {
+        .menu {
+          display: flex;
+          justify-content: space-between;
+          width: 100%;
+        }
+
+        .hamburger {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="menu-container">
+      <!-- Logo -->
+      <a href="https://scratch-coding-hut.github.io" class="menu-logo">
+        <img src="Images/Coding-Hut-Logo.png" alt="Coding Hut Logo" width="50" height="50"></img>
+      </a>
+
+      <!-- Menu for Mobile -->
+      <span class="hamburger" onclick="toggleMenu()">&#9776;</span>
+
+      <!-- Menu Items -->
+      <div class="menu">
+        <ul>
+          <li><a href="https://scratch-coding-hut.github.io">Home</a></li>
+          <li><a href="https://scratch-coding-hut.github.io/about">About</a></li>
+          <li><a href="https://scratch.mit.edu/discuss/topic/652178/">Scratch Forum</a></li>
+          <li><a href="https://scratch-coding-hut.github.io/Wiki/sitemaplinks">Wiki | FAQ | More Links</a></li>
+        </ul>
+        <ul>
+          <li><a href="https://scratch-coding-hut.github.io/messages">Messages</a></li>
+          <li><a id="user" href="https://scratch-coding-hut.github.io/account">My Account</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <h1 style="text-align:center;"><b>About Coding Hut</b></h1>
+    <h2 style="text-align:center;">Shop Created At Dec. 27, 2022 20:53:31</h2>
+Coding Hut is a shop that does coding, art, and many more! For more than 3 years, we have been helping Scratchers as well as New Scratchers with lots of Scratch-related things.
+<br>
+Coding Hut was founded by <a href='https://scratch.mit.edu/users/MyScratchedAccount'>@MyScratchedAccount</a> on Dec. 27, 2022 20:53:31.</h2>
+
+    
+    <script>
+      const username = localStorage.getItem('username');
+      if (user) {
+        document.getElementById('user').textContent = username;
+      }
+      function toggleMenu() {
+        var menu = document.querySelector('.menu');
+        menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+      }
+    </script>
+  </body>
+</html>

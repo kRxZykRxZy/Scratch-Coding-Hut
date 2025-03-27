@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /sites/YOURSITEURL/home/
+Disallow: /account/
+Disallow: /account-dashboard/
+Sitemap: https://scratch-coding-hut.github.io/sitemap.xml

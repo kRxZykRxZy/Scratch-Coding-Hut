@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Messages | Coding Hut Website</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+      body {
+        overflow-x: hidden;
+        font-family: Sans-Serif;
+        margin: 0;
+      }
+
+.header {
+  padding: 60px;
+  text-align: center;
+  background: #1abc9c;
+  color: white;
+  font-size: 30px;
+}
+
+.badge {
+  background-color: red;
+  color: white;
+  padding: 4px 8px;
+  text-align: center;
+  border-radius: 5px;
+}
+      
+      /* The alert message box */
+.alert {
+  padding: 20px;
+  background-color: #f44336; /* Red */
+  color: white;
+  margin-bottom: 15px;
+}
+
+/* The close button */
+.closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+/* When moving the mouse over the close button */
+.closebtn:hover {
+  color: black;
+}
+      
+      .menu-container {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: #c04d4d;
+        padding: 20px;
+        z-index: 1;
+        user-select: none;
+        box-sizing: border-box;
+      }
+
+      /* The snackbar - position it at the bottom and in the middle of the screen */
+#snackbar {
+  visibility: hidden; /* Hidden by default. Visible on click */
+  min-width: 250px; /* Set a default minimum width */
+  margin-left: -125px; /* Divide value of min-width by 2 */
+  background-color: #333; /* Black background color */
+  color: #fff; /* White text color */
+  text-align: center; /* Centered text */
+  border-radius: 2px; /* Rounded borders */
+  padding: 16px; /* Padding */
+  position: fixed; /* Sit on top of the screen */
+  z-index: 1; /* Add a z-index if needed */
+  left: 50%; /* Center the snackbar */
+  bottom: 30px; /* 30px from the bottom */
+}
+
+/* Show the snackbar when clicking on a button (class added with JavaScript) */
+#snackbar.show {
+  visibility: visible; /* Show the snackbar */
+  /* Add animation: Take 0.5 seconds to fade in and out the snackbar.
+  However, delay the fade out process for 2.5 seconds */
+  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+/* Animations to fade the snackbar in and out */
+@-webkit-keyframes fadein {
+  from {bottom: 0; opacity: 0;}
+  to {bottom: 30px; opacity: 1;}
+}
+
+@keyframes fadein {
+  from {bottom: 0; opacity: 0;}
+  to {bottom: 30px; opacity: 1;}
+}
+
+@-webkit-keyframes fadeout {
+  from {bottom: 30px; opacity: 1;}
+  to {bottom: 0; opacity: 0;}
+}
+
+@keyframes fadeout {
+  from {bottom: 30px; opacity: 1;}
+  to {bottom: 0; opacity: 0;}
+}
+
+      .menu-logo img {
+        max-height: 40px;
+        max-width: 100px;
+        flex-shrink: 0;
+      }
+
+      .menu-container a {
+        text-decoration: none;
+        color: #ffffff;
+        transition: color 0.3s ease;
+      }
+
+      .menu-container a:hover {
+        color: #50e3c2;
+      }
+
+      .menu ul {
+        list-style: none;
+        display: flex;
+        padding: 0;
+        margin: 0;
+      }
+
+      .menu li {
+        padding: 0 20px;
+        font-size: 22px;
+      }
+
+      /* Mobile Styles */
+      @media only screen and (max-width: 767px) {
+        .menu-container {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .menu-logo {
+          margin-bottom: 10px;
+        }
+
+        .menu {
+          display: none;
+          width: 100%;
+          flex-direction: column;
+        }
+
+        .menu ul {
+          flex-direction: column;
+          width: 100%;
+        }
+
+        .menu li {
+          padding: 10px 0;
+          text-align: center;
+        }
+
+        /* Menu button */
+        .hamburger {
+          display: block;
+          font-size: 30px;
+          cursor: pointer;
+        }
+      }
+
+      /* Desktop Styles */
+      @media only screen and (min-width: 768px) {
+        .menu {
+          display: flex;
+          justify-content: space-between;
+          width: 100%;
+        }
+
+        .hamburger {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="menu-container">
+      <!-- Logo -->
+      <a href="https://scratch-coding-hut.github.io" class="menu-logo">
+        <img src="Images/Coding-Hut-Logo.png" alt="Coding Hut Logo" width="50" height="50"></img>
+      </a>
+
+      <!-- Menu for Mobile -->
+      <span class="hamburger" onclick="toggleMenu()">&#9776;</span>
+
+      <!-- Menu Items -->
+      <div class="menu">
+        <ul>
+          <li><a href="https://scratch-coding-hut.github.io">Home</a></li>
+          <li><a href="https://scratch-coding-hut.github.io/about">About</a></li>
+          <li><a href="https://scratch.mit.edu/discuss/topic/652178/">Scratch Forum</a></li>
+          <li><a href="https://scratch-coding-hut.github.io/Wiki/sitemaplinks">Wiki | FAQ | More Links</a></li>
+        </ul>
+        <ul>
+          <li><a href="https://scratch-coding-hut.github.io/account">My Account</a></li>
+        </ul>
+      </div>
+    </nav>
+    
+<div class="header">
+  <h1>Messages</h1>
+  <p>Check the messages, alerts and news from Coding Hut here.</p>
+</div>
+
+<br>
+
+<!-- Use a button to open the snackbar, that says Coming Soon, as messaging staff through the messages menu is not a feature yet -->
+<b>Actions:</b> <button onclick="myFunction()">Message Staff</button>
+
+<!-- The actual snackbar -->
+<div id="snackbar">This feature is Coming Soon!</div>
+
+<h3>Alerts From Coding Hut <span class="badge">1 Alert</span></h3>
+
+<h4>Higher Priority Alerts</h4>
+<center><h3>You currently don't have any alerts. Check back later!</h3></center>
+
+<h4>Normal Priority Alerts</h4>
+<center><h3>You currently don't have any alerts. Check back later!</h3></center>
+
+<h4>Lower Priority Alerts</h4>
+<center><h3>You currently don't have any alerts. Check back later!</h3></center>
+
+<h4>Lowest Priority Alerts <span class="badge">1 Alert</span></h4>
+<div class="alert">
+  <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+  Welcome to Coding Hut! Try signing in, making orders, becoming staff and more! We are glad you joined us.
+</div>
+
+<h3>Messages</h3>
+
+<h4>High Priority Messages</h4>
+<center><h2>You currently don't have any messages. Check back later!</h2></center>
+
+<h4>Normal Priority Messages</h4>
+<center><h2>You currently don't have any messages. Check back later!</h2></center>
+
+<h3>Private Messages Inbox</h3>
+    See your private messages right in a extended inbox.
+    <a href="https://www.Scratch-Coding-Hut.github.io/privatemessages">
+      <button>Check And Send Private Messages</button>
+</a>
+
+<br>
+<br>
+    
+    <script>
+      function toggleMenu() {
+        var menu = document.querySelector('.menu');
+        menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+      }
+function myFunction() {
+  // Get the snackbar DIV
+  var x = document.getElementById("snackbar");
+
+  // Add the "show" class to DIV
+  x.className = "show";
+
+  // After 3 seconds, remove the show class from DIV
+  setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+}
+    </script>
+  </body>
+</html>

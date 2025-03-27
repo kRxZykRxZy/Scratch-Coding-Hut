@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Banned | Coding Hut</title>
+</head>
+<body>	
+<h1>Banned From Coding Hut</h1>
+
+<!-- Default Dynamic Section -->
+<div id="default-content" class="dynamic-content">
+  You have been banned from Coding Hut for breaking the Rules, but for an unknown reason.
+</div>
+<!-- Dynamic Section 1 -->
+<div id="spam" class="dynamic-content">
+  You have been banned from Coding Hut for spamming.
+</div>
+<!-- Dynamic Section 2 -->
+<div id="rude" class="dynamic-content">
+  You have been banned from Coding Hut for being rude.
+</div>
+<!-- Dynamic Section 3 -->
+<div id="nosnip" class="dynamic-content">
+  You have been banned from Coding Hut for not snipping your posts too much.
+</div>
+
+If you want to appeal please use the appeal form or contact MyScratchedAccount on Scratch.
+	
+</body>
+</html>
+
+<style>
+.dynamic-content {
+    display:none;
+}
+</style>
+
+<script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
+<script type="text/javascript">
+    function getParameterByName(name, url) {
+        if (!url) url = window.location.href;
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+    }
+
+    $(document).ready(function() {
+        var username = getParameterByName('username');
+	const username = localStorage.getItem('username')
+        
+        $.getJSON('bannedusers.json', function(data) {
+            var bannedUsers = data.bannedusers;
+            var foundUser = bannedUsers.find(user => user.username === username);
+            
+            if (foundUser) {
+                var reason = foundUser.reason.toLowerCase();
+                if (reason && $("#" + reason).length) {
+                    $("#" + reason).show();
+                } else {
+                    $('#default-content').show();
+                }
+            } else {
+                $('#default-content').show();
+            }
+        });
+    });
+</script>
