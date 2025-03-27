@@ -16,10 +16,10 @@ jobs:
         with:
           ref: main  # Ensure you're deploying from the correct branch (main)
 
-      # Deploy to GitHub Pages
+      # Set up the GitHub Pages deploy action
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4  # Using the latest stable version
         with:
           branch: gh-pages  # The branch where the content will be deployed (default is gh-pages)
           folder: src  # The folder to deploy (in your case, it's 'src')
-          token: ${{ secrets.GITHUB_TOKEN }}  # Automatically used token for authentication
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}  # Use the PAT stored in GitHub secrets
