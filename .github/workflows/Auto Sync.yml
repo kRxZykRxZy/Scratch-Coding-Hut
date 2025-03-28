@@ -1,42 +1,33 @@
-name: Clone Scratch-Coding-Hut Repo
+name: Clone and Push Repository
 
 on:
   schedule:
-    - cron: '*/1 * * * *'  # Run every minute
-  workflow_dispatch:  # Allows manual trigger if needed
+    - cron: '*/1 * * * *'  # This cron expression means every minute
 
 jobs:
-  clone-repo:
+  clone_and_push:
     runs-on: ubuntu-latest
-
+    
     steps:
-    - name: Checkout the current repository
-      uses: actions/checkout@v3
-      with:
-        persist-credentials: false  # Disable automatic credentials to use GITHUB_TOKEN manually
+      # Step 1: Checkout the current repository (kRxZykRxZy/Scratch-Coding-Hut)
+      - name: Checkout the current repository
+        uses: actions/checkout@v2
 
-    - name: Clone Scratch-Coding-Hut repository
-      run: |
-        git clone https://github.com/scratch-coding-hut/Scratch-Coding-Hut.git temp-repo
-        rsync -av --progress temp-repo/ ./ --exclude .git/
-        rm -rf temp-repo
+      # Step 2: Clone Scratch-Coding-Hut/Scratch-Coding-Hut repository using PAT
+      - name: Clone Scratch-Coding-Hut/Scratch-Coding-Hut repository
+        run: |
+          git clone https://x-access-token:${{ secrets.MY_GITHUB_TOKEN }}@github.com/Scratch-Coding-Hut/Scratch-Coding-Hut.git
+          cd Scratch-Coding-Hut
 
-    - name: Configure Git
-      run: |
-        git config --global user.name 'github-actions[bot]'
-        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+      # Step 3: Copy files into the current repository, excluding .github folder
+      - name: Copy files to current repository, excluding .github folder
+        run: |
+          shopt -s extglob
+          cp -r Scratch-Coding-Hut/!(.github) .
 
-    - name: Check for changes
-      run: |
-        git add .
-        if ! git diff --cached --quiet; then
-          echo "Changes detected, committing..."
-          git commit -m "Add content from Scratch-Coding-Hut repo"
-        else
-          echo "No changes to commit"
-          exit 0
-        fi
-
-    - name: Push changes to the repository
-      run: |
-        git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git HEAD:main
+      # Step 4: Commit and push the cloned content into kRxZykRxZy/Scratch-Coding-Hut
+      - name: Commit and push changes to kRxZykRxZy/Scratch-Coding-Hut
+        run: |
+          git add .
+          git commit -m "Cloned contents of Scratch-Coding-Hut/Scratch-Coding-Hut excluding .github folder"
+          git push https://x-access-token:${{ secrets.MY_GITHUB_TOKEN }}@github.com/kRxZykRxZy/Scratch-Coding-Hut.git main
