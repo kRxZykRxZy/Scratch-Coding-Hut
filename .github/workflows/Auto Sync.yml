@@ -12,6 +12,8 @@ jobs:
     steps:
     - name: Checkout the current repository
       uses: actions/checkout@v3
+      with:
+        persist-credentials: false
 
     - name: Clone Scratch-Coding-Hut repository
       run: |
@@ -19,10 +21,13 @@ jobs:
         rsync -av --progress temp-repo/ ./
         rm -rf temp-repo
 
-    - name: Commit and push changes
+    - name: Configure Git
       run: |
         git config --global user.name 'github-actions[bot]'
         git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
+    - name: Commit and push changes
+      run: |
         git add .
         git commit -m "Add content from Scratch-Coding-Hut repo" || echo "No changes to commit"
-        git push
+        git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git HEAD:main
