@@ -1,36 +1,28 @@
-name: Auto Sync Data from Another Repo
+name: Clone Scratch-Coding-Hut Repo
 
 on:
   schedule:
-    - cron: '* * * * *' # Runs every minute
-  workflow_dispatch: # Manual trigger if needed
+    - cron: '*/1 * * * *'  # Run every minute
+  workflow_dispatch:  # Allows manual trigger if needed
 
 jobs:
-  sync-repo:
+  clone-repo:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Current Repo
-      uses: actions/checkout@v2
+    - name: Checkout the current repository
+      uses: actions/checkout@v3
 
-    - name: Delete Current Repo Contents
+    - name: Clone Scratch-Coding-Hut repository
       run: |
-        find . -mindepth 1 -maxdepth 1 ! -name ".git" -exec rm -rf {} +
+        git clone https://github.com/scratch-coding-hut/Scratch-Coding-Hut.git temp-repo
+        rsync -av --progress temp-repo/ ./
+        rm -rf temp-repo
 
-    - name: Download and Extract Target Repo
+    - name: Commit and push changes
       run: |
-        wget -q https://github.com/Scratch-Coding-Hut/Scratch-Coding-Hut.github.io/archive/refs/heads/main.zip -O main.zip
-        unzip -q main.zip
-        rsync -av --progress Scratch-Coding-Hut.github.io-main/ . --exclude .git --delete
-        rm -rf Scratch-Coding-Hut.github.io-main main.zip
-
-    - name: Configure Git
-      run: |
-        git config user.name "github-actions"
-        git config user.email "github-actions@github.com"
-
-    - name: Commit and Push Changes
-      run: |
+        git config --global user.name 'github-actions[bot]'
+        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
         git add .
-        git diff --quiet && git diff --staged --quiet || git commit -m "Sync data from target repo"
+        git commit -m "Add content from Scratch-Coding-Hut repo" || echo "No changes to commit"
         git push
