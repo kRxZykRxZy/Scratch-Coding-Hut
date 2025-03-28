@@ -13,7 +13,7 @@ jobs:
     - name: Checkout the current repository
       uses: actions/checkout@v3
       with:
-        persist-credentials: false  # Disables default credentials
+        persist-credentials: false  # Disable automatic credentials
 
     - name: Clone Scratch-Coding-Hut repository
       run: |
@@ -25,6 +25,7 @@ jobs:
       run: |
         git config --global user.name 'github-actions[bot]'
         git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+        git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
 
     - name: Check for changes
       run: |
@@ -32,7 +33,7 @@ jobs:
         if ! git diff --cached --quiet; then
           echo "Changes detected, committing..."
           git commit -m "Add content from Scratch-Coding-Hut repo"
-          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git HEAD:main
+          git push origin main
         else
           echo "No changes to commit"
         fi
