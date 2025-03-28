@@ -1,4 +1,4 @@
-name: Clone and Push Repository
+name: Clone and Push Repository via Python
 
 on:
   schedule:
@@ -13,19 +13,23 @@ jobs:
       - name: Checkout the current repository
         uses: actions/checkout@v2
 
-      # Step 2: Clone Scratch-Coding-Hut/Scratch-Coding-Hut repository using PAT
-      - name: Clone Scratch-Coding-Hut/Scratch-Coding-Hut repository
-        run: |
-          git clone https://x-access-token:${{ secrets.MY_GITHUB_TOKEN }}@github.com/Scratch-Coding-Hut/Scratch-Coding-Hut.git
-          cd Scratch-Coding-Hut
+      # Step 2: Set up Python environment
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
 
-      # Step 3: Copy files into the current repository, excluding .github folder
-      - name: Copy files to current repository, excluding .github folder
+      # Step 3: Install required Python dependencies (requests, gitpython)
+      - name: Install dependencies
         run: |
-          shopt -s extglob
-          cp -r Scratch-Coding-Hut/!(.github) .
+          pip install requests gitpython
 
-      # Step 4: Commit and push the cloned content into kRxZykRxZy/Scratch-Coding-Hut
+      # Step 4: Run the Python script to clone and handle files
+      - name: Run Python script to clone and manage files
+        run: |
+          python3 ./clone_and_manage.py
+
+      # Step 5: Commit and push changes to kRxZykRxZy/Scratch-Coding-Hut
       - name: Commit and push changes to kRxZykRxZy/Scratch-Coding-Hut
         run: |
           git add .
