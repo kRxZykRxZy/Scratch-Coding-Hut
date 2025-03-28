@@ -1,37 +1,20 @@
-name: Clone and Push Repository via Python
+name: Repo File Sync
 
 on:
   schedule:
-    - cron: '*/1 * * * *'  # This cron expression means every minute
+    - cron: "*/1 * * * *" # Runs every minute
+  workflow_dispatch: # Manual trigger if needed
 
 jobs:
-  clone_and_push:
+  sync:
     runs-on: ubuntu-latest
-    
+
     steps:
-      # Step 1: Checkout the current repository (kRxZykRxZy/Scratch-Coding-Hut)
-      - name: Checkout the current repository
-        uses: actions/checkout@v2
+      - name: Checkout Source Repo
+        uses: actions/checkout@v3
 
-      # Step 2: Set up Python environment
-      - name: Set up Python
-        uses: actions/setup-python@v2
+      - name: Repo File Sync Action
+        uses: BetaHuhn/repo-file-sync-action@v1.21.1
         with:
-          python-version: '3.x'
-
-      # Step 3: Install required Python dependencies (requests, gitpython)
-      - name: Install dependencies
-        run: |
-          pip install requests gitpython
-
-      # Step 4: Run the Python script to clone and handle files
-      - name: Run Python script to clone and manage files
-        run: |
-          python3 ./clone_and_manage.py
-
-      # Step 5: Commit and push changes to kRxZykRxZy/Scratch-Coding-Hut
-      - name: Commit and push changes to kRxZykRxZy/Scratch-Coding-Hut
-        run: |
-          git add .
-          git commit -m "Cloned contents of Scratch-Coding-Hut/Scratch-Coding-Hut excluding .github folder"
-          git push https://x-access-token:${{ secrets.MY_GITHUB_TOKEN }}@github.com/kRxZykRxZy/Scratch-Coding-Hut.git main
+          GH_PAT: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          CONFIG_PATH: .github/sync-config.yml # Use custom config to sync src
