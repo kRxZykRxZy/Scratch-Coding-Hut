@@ -6,7 +6,7 @@ import shutil
 
 # Your GitHub repository URL and token
 repo_url = "https://github.com/Scratch-Coding-Hut/Scratch-Coding-Hut"
-token = os.environ["MY_GITHUB_TOKEN"]  # This is your PAT stored as a secret in GitHub
+token = "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" # This is your PAT stored as a secret in GitHub
 
 # Function to clone the repo using GitHub API
 def clone_repo():
