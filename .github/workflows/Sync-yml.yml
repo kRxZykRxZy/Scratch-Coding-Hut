@@ -15,7 +15,7 @@ jobs:
       with:
         fetch-depth: 0
         repository: scratch-coding-hut/Scratch-Coding-Hut
-        token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+        token: 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
 
     - name: Push to destination repo
       run: |
