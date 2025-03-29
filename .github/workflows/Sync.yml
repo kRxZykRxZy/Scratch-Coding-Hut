@@ -1,0 +1,20 @@
+name: Repo File Sync
+
+on:
+  schedule:
+    - cron: "*/1 * * * *" # Runs every minute
+  workflow_dispatch: # Manual trigger if needed
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Source Repo
+        uses: actions/checkout@v3
+
+      - name: Repo File Sync Action
+        uses: BetaHuhn/repo-file-sync-action@v1.21.1
+        with:
+          GH_PAT: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          CONFIG_PATH: .github/sync-config.yml # Use custom config to sync src
