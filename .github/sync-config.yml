@@ -1,7 +1,7 @@
 repos:
-  - "kRxZykRxZy/Scratch-Coding-Hut" # Target repo
+  - "Scratch-Coding-Hut/Scratch-Coding-Hut" # Correct target repo
 
 files:
-  - source: "/src"  # Sync the entire src folder
-    dest: "/"    # Place it in the root directory of the target repo
-    delete: true # Set to true if you want to delete extra files in the target repo
+  - source: "/src/"  # Copy all files inside 'src' folder
+    dest: "/"        # Place them in the root of the target repo
+    delete: true     # Delete extra files in the target repo
