@@ -182,16 +182,16 @@
   <h1>Scratch Coding Hut Wiki</h1>
 
   <div class="form-container">
-    <h2>Create a Wiki</h2>
+    <h2>Create a Wiki Post</h2>
     <form id="createWikiForm">
       <input type="text" id="wikiTitle" placeholder="Title" required>
       <textarea id="wikiContent" placeholder="Content" required></textarea>
-      <button type="submit">Create Wiki</button>
+      <button type="submit">Create Wiki Post</button>
     </form>
   </div>
 
   <div class="wikis-container">
-    <h2>Wikis</h2>
+    <h2>Wiki Posts</h2>
     <ul id="wikiList"></ul>
   </div>
 
@@ -204,7 +204,7 @@
       // Retrieve username from localStorage
       const username = localStorage.getItem('username');
       if (!username) {
-        alert('You must be logged in to interact with the wiki.');
+        alert('Sorry, You must be logged in to interact with the wiki. Go to https://scratch-coding-hut.netlify.app/account to log in.');
         return; // Stop execution if no username is found
       }
 
@@ -274,7 +274,7 @@
       // Edit a wiki
       window.editWiki = async (id, title, content) => {
         if (!username) {
-          alert('You must be logged in to edit a wiki.');
+          alert('You must be logged in to edit a wiki. Go to https://scratch-coding-hut.netlify.app/account to log in.');
           return;
         }
 
