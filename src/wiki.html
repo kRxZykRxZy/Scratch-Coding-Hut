@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scratch Coding Hut | Wiki</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    .form-container {
+      margin-bottom: 20px;
+    }
+
+    input, textarea {
+      width: 100%;
+      margin: 5px 0;
+      padding: 10px;
+    }
+
+    button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    .wikis-container {
+      margin-top: 20px;
+    }
+
+    ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    li {
+      padding: 10px;
+      border: 1px solid #ddd;
+      margin-bottom: 10px;
+    }
+
+    button.delete {
+      background-color: red;
+      color: white;
+    }
+
+    button.edit {
+      background-color: yellow;
+      color: black;
+    }
+  </style>
+</head>
+<body>
+  <h1>Scratch Coding Hut Wiki</h1>
+
+  <div class="form-container">
+    <h2>Create a Wiki</h2>
+    <form id="createWikiForm">
+      <input type="text" id="wikiTitle" placeholder="Title" required>
+      <textarea id="wikiContent" placeholder="Content" required></textarea>
+      <input type="text" id="wikiOwner" placeholder="Your Username" required>
+      <button type="submit">Create Wiki</button>
+    </form>
+  </div>
+
+  <div class="wikis-container">
+    <h2>Wikis</h2>
+    <ul id="wikiList"></ul>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const createWikiForm = document.getElementById('createWikiForm');
+      const wikiList = document.getElementById('wikiList');
+      const backendUrl = 'https://thejsurlback.onrender.com/api';  // Replace with your backend URL
+
+      // Retrieve username from localStorage
+      const username = localStorage.getItem('username');
+      if (!username) {
+        alert('You must be logged in to interact with the wiki.');
+        return; // Stop execution if no username is found
+      }
+
+      // Fetch and display all wikis
+      const fetchWikis = async () => {
+        const response = await fetch(`${backendUrl}/wikis`);
+        const wikis = await response.json();
+        wikiList.innerHTML = ''; // Clear the current list
+
+        wikis.forEach(wiki => {
+          const li = document.createElement('li');
+          li.innerHTML = `
+            <h3>${wiki.title}</h3>
+            <p>${wiki.content}</p>
+            <small>Owner: ${wiki.owner}</small>
+            <button class="edit" onclick="editWiki(${wiki.id})">Edit</button>
+            <button class="delete" onclick="deleteWiki(${wiki.id})">Delete</button>
+          `;
+          wikiList.appendChild(li);
+        });
+      };
+
+      // Create a new wiki
+      createWikiForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const title = document.getElementById('wikiTitle').value;
+        const content = document.getElementById('wikiContent').value;
+
+        const response = await fetch(`${backendUrl}/wikis`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ title, content, owner: username }), // Send username from localStorage
+        });
+
+        const newWiki = await response.json();
+        fetchWikis(); // Refresh wiki list
+        createWikiForm.reset();
+      });
+
+      // Delete a wiki
+      window.deleteWiki = async (id) => {
+        if (!username) {
+          alert('You must be logged in to delete a wiki.');
+          return;
+        }
+
+        const response = await fetch(`${backendUrl}/wikis/${id}`, {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ owner: username }), // Send username from localStorage
+        });
+
+        if (response.ok) {
+          fetchWikis(); // Refresh wiki list
+        } else {
+          alert('Not authorized to delete this wiki or wiki not found');
+        }
+      };
+
+      // Edit a wiki
+      window.editWiki = async (id) => {
+        if (!username) {
+          alert('You must be logged in to edit a wiki.');
+          return;
+        }
+
+        const newTitle = prompt('New title:');
+        const newContent = prompt('New content:');
+
+        const response = await fetch(`${backendUrl}/wikis/${id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ title: newTitle, content: newContent, owner: username }), // Send username from localStorage
+        });
+
+        if (response.ok) {
+          fetchWikis(); // Refresh wiki list
+        } else {
+          alert('Not authorized to edit this wiki or wiki not found');
+        }
+      };
+
+      // Initial fetch of wikis
+      fetchWikis();
+    });
+  </script>
+</body>
+</html>
