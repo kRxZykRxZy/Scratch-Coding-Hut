@@ -19,5 +19,5 @@ jobs:
 
     - name: Push to destination repo
       run: |
-        git remote add destination https://x-access-token:${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/kRxZykRxZy/Scratch-Coding-Hut.git
+        git remote add destination https://x-access-token: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@github.com/kRxZykRxZy/Scratch-Coding-Hut.git
         git push destination main --force
