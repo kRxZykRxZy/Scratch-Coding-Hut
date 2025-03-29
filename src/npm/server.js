@@ -7,8 +7,8 @@ const port = process.env.PORT || 3000; // Port for Render to listen on
 
 // In-memory storage for wikis
 let wikis = [
-  { id: 1, title: 'Node.js', content: 'Node.js is a JavaScript runtime built on Chrome\'s V8 JavaScript engine.', owner: 'kRxZy_kRxZy' },
-  { id: 2, title: 'JavaScript', content: 'JavaScript is a programming language commonly used for web development.', owner: 'MyScratchedAccount' },
+  { id: 1, title: 'Node.js', content: 'Node.js is a JavaScript runtime built on Chrome\'s V8 JavaScript engine.', owner: 'krxzy_krxzy' },
+  { id: 2, title: 'JavaScript', content: 'JavaScript is a programming language commonly used for web development.', owner: 'myscratchedaccount' },
 ];
 
 app.use(bodyParser.json());
