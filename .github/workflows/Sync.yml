@@ -1,20 +1,23 @@
-name: Repo File Sync
+name: Sync Repos
 
 on:
   schedule:
-    - cron: "*/1 * * * *" # Runs every minute
-  workflow_dispatch: # Manual trigger if needed
+    - cron: '*/1 * * * *' # Runs every minute
+  workflow_dispatch: # Allows manual triggering
 
 jobs:
   sync:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Source Repo
-        uses: actions/checkout@v3
+    - name: Checkout source repo
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+        repository: scratch-coding-hut/Scratch-Coding-Hut
+        token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
 
-      - name: Repo File Sync Action
-        uses: BetaHuhn/repo-file-sync-action@v1.21.1
-        with:
-          GH_PAT: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          CONFIG_PATH: .github/sync-config.yml # Use custom config to sync src
+    - name: Push to destination repo
+      run: |
+        git remote add destination https://x-access-token:${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/kRxZykRxZy/Scratch-Coding-Hut.git
+        git push destination main --force
